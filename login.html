@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    function login()
+    {
+        //read username & password
+        const user={
+        username:document.getElementById("username").value,
+        password:document.getElementById("password").value
+        }
+        // alert(user.username)
+        //connect to backend
+        fetch("http://localhost:2000/login",
+        {
+            method:"POST",
+            headers:{
+                    'content-type':'application/json',
+                    'Accept':'application/json'
+                   
+                },
+                body: JSON.stringify(user)
+           
+        })
+        .then(response=> { return response.json()})
+        .then(data=>{
+              console.log(data)
+              if(data.success==true){
+                localStorage.setItem("token",data.token)
+                window.open("./index.html")
+              }
+        })
+    }    
+     
+        //2nd fun
+        function newData()
+        {
+            token=localStorage.getItem('token')
+
+            
+            fetch("http://localhost:2000/emps",{
+                "method":"GET",
+                headers:{'Authorization':`Bearer ${token}`}
+            })
+            .then((response)=>{
+                return response.json()
+            })
+            .then(data=>{
+                console.log(data)
+            })
+        }
+</script>
+</head>
+<div class="Container">
+<body>
+    Username:<input type="text" id="username" placeholder="Username"><br>
+    Password:<input type="password" id="password" placeholder="Password"><br>
+    <button onclick="login()" class="b1">login</button><br>
+    <button onclick="newData()" class="b2">Read</button><br>
+
+</body>
+<div>
+</body>
+</html>

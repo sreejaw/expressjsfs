@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+ 
+</head>
+<body>
+ 
+ 
+        id:<input type="text" id="id">
+        name:<input type="text"  id="name">
+        age:<input type="text"  id="age">
+ 
+        <button onclick="addData()"> Add</button>
+        <button onclick="fetchData()">Fetch</button>
+        <button onclick="deleteData()">Delete</button>
+        <button onclick="updateData()">Update</button>
+ 
+ <script>
+     function addData(){
+     const emp={"_id":document.getElementById("id").value,
+                 "name":document.getElementById("name").value,
+                 "age":document.getElementById("age").value
+                }
+                fetch("http://localhost:2000/addemp",{method:"POST",headers:{
+                    'content-type':'application/json'
+                },
+                body:JSON.stringify(emp)
+            })
+            .then((res)=>{
+                    console.log(res);
+            }).catch((err)=>console.log(err))
+            
+        }
+ 
+     
+     function fetchData(){
+         fetch("http://localhost:2000/emps")
+         .then(response=>{
+ 
+            return response.json()
+         })
+         .then(data=>{
+             data.forEach(element => {
+                console.log(element)
+             });
+ 
+         });
+ 
+        }
+        function deleteData(){
+            id=document.getElementById('id').value;
+
+            fetch('http://localhost:2000/deleteemp/'+id,{
+                method:'DELETE'
+            }).then(res =>{
+                return res.json()
+            }).then(data =>{
+                console.log(data)
+            })
+        }
+        function updateData(){
+     const emp={"_id":document.getElementById("id").value,
+                 "name":document.getElementById("name").value,
+                 "age":document.getElementById("age").value
+                }
+                fetch("http://localhost:2000/updateemp/"+id,
+                {method:"POST",headers:{
+                    'content-type':'application/json'
+                },
+                body:JSON.stringify(emp)
+            })
+            .then((res)=>{
+                    console.log(res);
+            }).catch((err)=>console.log(err))
+            
+           
+ 
+     }
+ </script>
+</body>
+</html>
